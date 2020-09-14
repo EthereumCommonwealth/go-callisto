@@ -18,6 +18,7 @@ package fetcher
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	mrand "math/rand"
 	"sort"
@@ -277,29 +278,27 @@ func (f *TxFetcher) Enqueue(peer string, txs []*types.Transaction, direct bool) 
 	)
 	errs := f.addTxs(txs)
 	for i, err := range errs {
-		if err != nil {
-			// Track the transaction hash if the price is too low for us.
-			// Avoid re-request this transaction when we receive another
-			// announcement.
-			if err == core.ErrUnderpriced || err == core.ErrReplaceUnderpriced {
-				for f.underpriced.Cardinality() >= maxTxUnderpricedSetSize {
-					f.underpriced.Pop()
-				}
-				f.underpriced.Add(txs[i].Hash())
+		// Track the transaction hash if the price is too low for us.
+		// Avoid re-request this transaction when we receive another
+		// announcement.
+		if errors.Is(err, core.ErrUnderpriced) || errors.Is(err, core.ErrReplaceUnderpriced) {
+			for f.underpriced.Cardinality() >= maxTxUnderpricedSetSize {
+				f.underpriced.Pop()
 			}
-			// Track a few interesting failure types
-			switch err {
-			case nil: // Noop, but need to handle to not count these
+			f.underpriced.Add(txs[i].Hash())
+		}
+		// Track a few interesting failure types
+		switch {
+		case err == nil: // Noop, but need to handle to not count these
 
-			case core.ErrAlreadyKnown:
-				duplicate++
+		case errors.Is(err, core.ErrAlreadyKnown):
+			duplicate++
 
-			case core.ErrUnderpriced, core.ErrReplaceUnderpriced:
-				underpriced++
+		case errors.Is(err, core.ErrUnderpriced) || errors.Is(err, core.ErrReplaceUnderpriced):
+			underpriced++
 
-			default:
-				otherreject++
-			}
+		default:
+			otherreject++
 		}
 		added = append(added, txs[i].Hash())
 	}
@@ -387,7 +386,7 @@ func (f *TxFetcher) loop() {
 					if announces := f.announces[ann.origin]; announces != nil {
 						announces[hash] = struct{}{}
 					} else {
-						f.announces[ann.origin] = map[common.Hash]struct{}{hash: struct{}{}}
+						f.announces[ann.origin] = map[common.Hash]struct{}{hash: {}}
 					}
 					continue
 				}
@@ -400,7 +399,7 @@ func (f *TxFetcher) loop() {
 					if announces := f.announces[ann.origin]; announces != nil {
 						announces[hash] = struct{}{}
 					} else {
-						f.announces[ann.origin] = map[common.Hash]struct{}{hash: struct{}{}}
+						f.announces[ann.origin] = map[common.Hash]struct{}{hash: {}}
 					}
 					continue
 				}
@@ -413,18 +412,18 @@ func (f *TxFetcher) loop() {
 					if waitslots := f.waitslots[ann.origin]; waitslots != nil {
 						waitslots[hash] = struct{}{}
 					} else {
-						f.waitslots[ann.origin] = map[common.Hash]struct{}{hash: struct{}{}}
+						f.waitslots[ann.origin] = map[common.Hash]struct{}{hash: {}}
 					}
 					continue
 				}
 				// Transaction unknown to the fetcher, insert it into the waiting list
-				f.waitlist[hash] = map[string]struct{}{ann.origin: struct{}{}}
+				f.waitlist[hash] = map[string]struct{}{ann.origin: {}}
 				f.waittime[hash] = f.clock.Now()
 
 				if waitslots := f.waitslots[ann.origin]; waitslots != nil {
 					waitslots[hash] = struct{}{}
 				} else {
-					f.waitslots[ann.origin] = map[common.Hash]struct{}{hash: struct{}{}}
+					f.waitslots[ann.origin] = map[common.Hash]struct{}{hash: {}}
 				}
 			}
 			// If a new item was added to the waitlist, schedule it into the fetcher
@@ -434,7 +433,7 @@ func (f *TxFetcher) loop() {
 			// If this peer is new and announced something already queued, maybe
 			// request transactions from them
 			if !oldPeer && len(f.announces[ann.origin]) > 0 {
-				f.scheduleFetches(timeoutTimer, timeoutTrigger, map[string]struct{}{ann.origin: struct{}{}})
+				f.scheduleFetches(timeoutTimer, timeoutTrigger, map[string]struct{}{ann.origin: {}})
 			}
 
 		case <-waitTrigger:
@@ -452,7 +451,7 @@ func (f *TxFetcher) loop() {
 						if announces := f.announces[peer]; announces != nil {
 							announces[hash] = struct{}{}
 						} else {
-							f.announces[peer] = map[common.Hash]struct{}{hash: struct{}{}}
+							f.announces[peer] = map[common.Hash]struct{}{hash: {}}
 						}
 						delete(f.waitslots[peer], hash)
 						if len(f.waitslots[peer]) == 0 {
@@ -515,7 +514,7 @@ func (f *TxFetcher) loop() {
 			// Schedule a new transaction retrieval
 			f.scheduleFetches(timeoutTimer, timeoutTrigger, nil)
 
-			// No idea if we sheduled something or not, trigger the timer if needed
+			// No idea if we scheduled something or not, trigger the timer if needed
 			// TODO(karalabe): this is kind of lame, can't we dump it into scheduleFetches somehow?
 			f.rescheduleTimeout(timeoutTimer, timeoutTrigger)
 
