@@ -113,7 +113,7 @@ var CallistoBootnodes = []string{
 }
 
 var CallistoTestnetBootnodes = []string{
-	"enode://1638d7c14d6f638e9faea17ae20597658f9ce65ed2f3ac06d7252088130e6b5c69aaab9900d6f1d415b898ee78e2c8847148d9c42598b54b90a69b18b0e8a93c@51.89.6.152:30303",
+	"enode://ba82fe4d5d984843489dd04281fabf687989a40b9e29596fad4387780a79a7c8004fe7b0ed9b82bbc461f07e47bf0040e79701dadc3230f56928ae87bde6c8bb@51.89.6.152:30303",
 }
 
 const dnsPrefix = "enrtree://AKA3AM6LPBYEUDMVNU3BSVQJ5AD45Y7YPOHJLEF6W26QOE4VTUDPE@"
