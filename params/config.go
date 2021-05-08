@@ -86,6 +86,7 @@ var (
 		ByzantiumBlock:      big.NewInt(20),
 		CLOHF1Block:         big.NewInt(1400000),
 		CLOMPBlock:          big.NewInt(2900001),
+		CSV2Block:           big.NewInt(7600000),
 		ConstantinopleBlock: big.NewInt(3100000),
 		PetersburgBlock:     big.NewInt(3100000),
 		IstanbulBlock:       big.NewInt(4950000),
@@ -105,6 +106,7 @@ var (
 		ByzantiumBlock:      big.NewInt(20),
 		CLOHF1Block:         big.NewInt(1000),
 		CLOMPBlock:          big.NewInt(1500),
+		CSV2Block:           big.NewInt(185000),
 		ConstantinopleBlock: big.NewInt(2000),
 		PetersburgBlock:     big.NewInt(2000),
 		IstanbulBlock:       big.NewInt(3000),
@@ -280,17 +282,16 @@ var (
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
+	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}}
+	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}}
 
-	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
-	TestRules       = TestChainConfig.Rules(new(big.Int))
+	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
 )
 
 // TrustedCheckpoint represents a set of post-processed trie roots (CHT and
@@ -367,6 +368,7 @@ type ChainConfig struct {
 
 	CLOHF1Block *big.Int `json:"clohf1Block,omitempty"` // Callisto Hardfork 1 block
 	CLOMPBlock  *big.Int `json:"cloMPBlock,omitempty"`
+	CSV2Block   *big.Int `json:"csv2Block,omitempty"`
 
 	// Various consensus engines
 	Ethash *EthashConfig `json:"ethash,omitempty"`
@@ -494,6 +496,11 @@ func (c *ChainConfig) IsCLOHF1(num *big.Int) bool {
 // IsCLOMP returns whether num represents a block number after the Callisto Monetary Policy fork
 func (c *ChainConfig) IsCLOMP(num *big.Int) bool {
 	return isForked(c.CLOMPBlock, num)
+}
+
+// IsCSV2 returns whether num represents a block number after the Callisto hard fork changing CS address to v2
+func (c *ChainConfig) IsCSV2(num *big.Int) bool {
+	return isForked(c.CSV2Block, num)
 }
 
 // CheckCompatible checks whether scheduled fork transitions have been imported

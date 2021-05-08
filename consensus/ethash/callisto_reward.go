@@ -21,8 +21,12 @@ var (
 	CLOTreasuryAddress = common.HexToAddress("0x74682Fc32007aF0b6118F259cBe7bCCC21641600")
 	// CLOStakeAddress - Stake Address before HF1
 	CLOStakeAddress = common.HexToAddress("0x3c06f218Ce6dD8E2c535a8925A2eDF81674984D9")
-	// CLOHF1StakeAddress - Stake Address HF1
+	// CLOHF1StakeAddress - Staking Address HF1
 	CLOHF1StakeAddress = common.HexToAddress("0xd813419749b3c2cdc94a2f9cfcf154113264a9d6")
+	// CSV2StakeAddress - Staking Address V2 (MAINNET)
+	CSV2StakeAddress = common.HexToAddress("0xd813419749b3c2cdc94a2f9cfcf154113264a9d6")
+	// CSV2StakeAddressTestNet - Staking Address V2 (TESTNET)
+	CSV2StakeAddressTestNet = common.HexToAddress("0x33e85f0e26600a6644b6c910639B0bc7a99fd34e")
 )
 
 func calcBigNumber(reward float64) *big.Int {
