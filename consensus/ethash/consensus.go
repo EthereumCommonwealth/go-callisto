@@ -706,6 +706,10 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 		stakeAddress = CLOHF1StakeAddress
 	}
 
+	if config.IsCSV2(header.Number) {
+		stakeAddress = CSV2StakeAddress
+	}
+
 	monetaryPolicyStep := big.NewInt(0)
 
 	if config.IsCLOMP(header.Number) {
