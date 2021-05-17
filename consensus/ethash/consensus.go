@@ -673,6 +673,10 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 
 	if config.IsCSV2(header.Number) {
 		stakeAddress = CSV2StakeAddress
+
+		if config.ChainID.Cmp(big.NewInt(20729)) == 0 {
+			stakeAddress = CSV2StakeAddressTestNet
+		}
 	}
 
 	monetaryPolicyStep := big.NewInt(0)
