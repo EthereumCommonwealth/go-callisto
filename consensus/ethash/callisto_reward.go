@@ -24,7 +24,7 @@ var (
 	// CLOHF1StakeAddress - Staking Address HF1
 	CLOHF1StakeAddress = common.HexToAddress("0xd813419749b3c2cdc94a2f9cfcf154113264a9d6")
 	// CSV2StakeAddress - Staking Address V2 (MAINNET)
-	CSV2StakeAddress = common.HexToAddress("0xd813419749b3c2cdc94a2f9cfcf154113264a9d6")
+	CSV2StakeAddress = common.HexToAddress("0x08A7c8be47773546DC5E173d67B0c38AfFfa4b84")
 	// CSV2StakeAddressTestNet - Staking Address V2 (TESTNET)
 	CSV2StakeAddressTestNet = common.HexToAddress("0x33e85f0e26600a6644b6c910639B0bc7a99fd34e")
 )

@@ -110,7 +110,7 @@ var (
 		ByzantiumBlock:      big.NewInt(20),
 		CLOHF1Block:         big.NewInt(1000),
 		CLOMPBlock:          big.NewInt(1500),
-		CSV2Block:           big.NewInt(185000),
+		CSV2Block:           big.NewInt(245000),
 		ConstantinopleBlock: big.NewInt(2000),
 		PetersburgBlock:     big.NewInt(2000),
 		IstanbulBlock:       big.NewInt(3000),
