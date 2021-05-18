@@ -593,9 +593,7 @@ var getMonetaryPolicyStep func(blockNumber *big.Int) *big.Int = getMonetaryPolic
 func (ethash *Ethash) Prepare(chain consensus.ChainReader, header *types.Header) error {
 	genesisHash := chain.GetHeaderByNumber(0).Hash()
 
-	if genesisHash == params.CallistoGenesisHash || genesisHash == params.CallistoTestnetGenesisHash {
-		accumulateRewards = callistoAccumulateRewards
-	}
+	accumulateRewards = callistoAccumulateRewards
 
 	if genesisHash == params.CallistoTestnetGenesisHash {
 		getMonetaryPolicyStep = getMonetaryPolicyStepTestnet
