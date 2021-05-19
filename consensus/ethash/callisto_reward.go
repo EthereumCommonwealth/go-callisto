@@ -26,7 +26,7 @@ var (
 	// CSV2StakeAddress - Staking Address V2 (MAINNET)
 	CSV2StakeAddress = common.HexToAddress("0x08A7c8be47773546DC5E173d67B0c38AfFfa4b84")
 	// CSV2StakeAddressTestNet - Staking Address V2 (TESTNET)
-	CSV2StakeAddressTestNet = common.HexToAddress("0xC6a3C2409549BB13cD33CB5D374c0C7A214D07D9")
+	CSV2StakeAddressTestNet = common.HexToAddress("0xBD38997D00295D738BDC258DB4446577f4181Ed7")
 )
 
 func calcBigNumber(reward float64) *big.Int {
