@@ -815,10 +815,8 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 	switch {
 	case ctx.GlobalIsSet(BootnodesFlag.Name):
 		urls = SplitAndTrim(ctx.GlobalString(BootnodesFlag.Name))
-	case ctx.GlobalBool(LegacyTestnetFlag.Name):
-		urls = params.CallistoTestnetBootnodes
 	case ctx.GlobalBool(RopstenFlag.Name):
-		urls = params.RopstenBootnodes
+		urls = params.CallistoTestnetBootnodes
 	case ctx.GlobalBool(RinkebyFlag.Name):
 		urls = params.RinkebyBootnodes
 	case ctx.GlobalBool(GoerliFlag.Name):
@@ -1574,12 +1572,9 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 79
 		}
-<<<<<<< HEAD
 		cfg.Genesis = core.DefaultCallistoTestnetGenesisBlock()
-=======
-		cfg.Genesis = core.DefaultRopstenGenesisBlock()
-		SetDNSDiscoveryDefaults(cfg, params.RopstenGenesisHash)
->>>>>>> refs/rewritten/onto
+		// cfg.Genesis = core.DefaultRopstenGenesisBlock()
+		// SetDNSDiscoveryDefaults(cfg, params.RopstenGenesisHash)
 	case ctx.GlobalBool(RinkebyFlag.Name):
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 4
@@ -1779,13 +1774,8 @@ func MakeChainDatabase(ctx *cli.Context, stack *node.Node) ethdb.Database {
 func MakeGenesis(ctx *cli.Context) *core.Genesis {
 	var genesis *core.Genesis
 	switch {
-<<<<<<< HEAD
-	case ctx.GlobalBool(LegacyTestnetFlag.Name):
-		genesis = core.DefaultCallistoTestnetGenesisBlock()
-=======
 	case ctx.GlobalBool(RopstenFlag.Name):
-		genesis = core.DefaultRopstenGenesisBlock()
->>>>>>> refs/rewritten/onto
+		genesis = core.DefaultCallistoTestnetGenesisBlock()
 	case ctx.GlobalBool(RinkebyFlag.Name):
 		genesis = core.DefaultRinkebyGenesisBlock()
 	case ctx.GlobalBool(GoerliFlag.Name):
