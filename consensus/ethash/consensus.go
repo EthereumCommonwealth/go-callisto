@@ -335,15 +335,12 @@ func (ethash *Ethash) CalcDifficulty(chain consensus.ChainHeaderReader, time uin
 func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Header) *big.Int {
 	next := new(big.Int).Add(parent.Number, big1)
 	switch {
-<<<<<<< HEAD
 	case config.IsCLOMP(next):
 		return calcDifficultyCallisto(time, parent)
-=======
 	case config.IsArrowGlacier(next):
 		return calcDifficultyEip4345(time, parent)
 	case config.IsLondon(next):
 		return calcDifficultyEip3554(time, parent)
->>>>>>> refs/rewritten/onto
 	case config.IsMuirGlacier(next):
 		return calcDifficultyEip2384(time, parent)
 	case config.IsConstantinople(next):
@@ -589,8 +586,7 @@ var getMonetaryPolicyStep func(blockNumber *big.Int) *big.Int = getMonetaryPolic
 
 // Prepare implements consensus.Engine, initializing the difficulty field of a
 // header to conform to the ethash protocol. The changes are done inline.
-<<<<<<< HEAD
-func (ethash *Ethash) Prepare(chain consensus.ChainReader, header *types.Header) error {
+func (ethash *Ethash) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
 	genesisHash := chain.GetHeaderByNumber(0).Hash()
 
 	accumulateRewards = callistoAccumulateRewards
@@ -599,9 +595,6 @@ func (ethash *Ethash) Prepare(chain consensus.ChainReader, header *types.Header)
 		getMonetaryPolicyStep = getMonetaryPolicyStepTestnet
 	}
 
-=======
-func (ethash *Ethash) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
->>>>>>> refs/rewritten/onto
 	parent := chain.GetHeader(header.ParentHash, header.Number.Uint64()-1)
 	if parent == nil {
 		return consensus.ErrUnknownAncestor
