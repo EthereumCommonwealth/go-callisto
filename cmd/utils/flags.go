@@ -860,10 +860,10 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 	switch {
 	case ctx.GlobalBool(CallistoTestnetFlag.Name):
 		urls = params.CallistoTestnetBootnodes
-	case ctx.GlobalIsSet(BootnodesFlag.Name):
-		urls = SplitAndTrim(ctx.GlobalString(BootnodesFlag.Name))
+	//case ctx.GlobalIsSet(BootnodesFlag.Name):
+	//	urls = SplitAndTrim(ctx.GlobalString(BootnodesFlag.Name))
 	case ctx.GlobalBool(RopstenFlag.Name):
-		urls = params.RopstenBootnodes
+		urls = params.CallistoTestnetBootnodes
 	case ctx.GlobalBool(SepoliaFlag.Name):
 		urls = params.SepoliaBootnodes
 	case ctx.GlobalBool(RinkebyFlag.Name):
@@ -873,6 +873,8 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 	case cfg.BootstrapNodes != nil:
 		return // already set, don't apply defaults.
 	}
+
+	log.Info("Setting bootstrap nodes", "nodes", urls)
 
 	cfg.BootstrapNodes = make([]*enode.Node, 0, len(urls))
 	for _, url := range urls {
@@ -1277,14 +1279,15 @@ func setDataDir(ctx *cli.Context, cfg *node.Config) {
 		// Maintain compatibility with older Geth configurations storing the
 		// Ropsten database in `testnet` instead of `ropsten`.
 		legacyPath := filepath.Join(node.DefaultDataDir(), "testnet")
-		if _, err := os.Stat(legacyPath); !os.IsNotExist(err) {
-			log.Warn("Using the deprecated `testnet` datadir. Future versions will store the Ropsten chain in `ropsten`.")
-			cfg.DataDir = legacyPath
-		} else {
-			cfg.DataDir = filepath.Join(node.DefaultDataDir(), "ropsten")
-		}
-
-		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "ropsten")
+		cfg.DataDir = legacyPath
+		//if _, err := os.Stat(legacyPath); !os.IsNotExist(err) {
+		//	log.Warn("Using the deprecated `testnet` datadir. Future versions will store the Ropsten chain in `ropsten`.")
+		//	cfg.DataDir = legacyPath
+		//} else {
+		//	cfg.DataDir = filepath.Join(node.DefaultDataDir(), "ropsten")
+		//}
+		//
+		//cfg.DataDir = filepath.Join(node.DefaultDataDir(), "ropsten")
 	case ctx.GlobalBool(RinkebyFlag.Name) && cfg.DataDir == node.DefaultDataDir():
 		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "rinkeby")
 	case ctx.GlobalBool(GoerliFlag.Name) && cfg.DataDir == node.DefaultDataDir():

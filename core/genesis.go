@@ -245,7 +245,7 @@ func (g *Genesis) configOrDefault(ghash common.Hash) *params.ChainConfig {
 	case ghash == params.MainnetGenesisHash:
 		return params.MainnetChainConfig
 	case ghash == params.RopstenGenesisHash:
-		return params.RopstenChainConfig
+		return params.CallistoChainTestnetConfig
 	case ghash == params.SepoliaGenesisHash:
 		return params.SepoliaChainConfig
 	case ghash == params.RinkebyGenesisHash:
