@@ -301,6 +301,9 @@ func (g *Genesis) ToBlock(db ethdb.Database) *types.Block {
 			head.BaseFee = g.BaseFee
 		} else {
 			head.BaseFee = new(big.Int).SetUint64(params.InitialBaseFee)
+			if g.Config.IsEIP1559Callisto(common.Big0) {
+				head.BaseFee = new(big.Int).SetUint64(params.CallistoInitialBaseFee)
+			}
 		}
 	}
 	statedb.Commit(false)
