@@ -71,6 +71,7 @@ func CalcBaseFee(config *params.ChainConfig, parent *types.Header) *big.Int {
 	if parent.GasUsed == parentGasTarget {
 		return new(big.Int).Set(parent.BaseFee)
 	}
+
 	if parent.GasUsed > parentGasTarget {
 		// If the parent block used more gas than its target, the baseFee should increase.
 		gasUsedDelta := new(big.Int).SetUint64(parent.GasUsed - parentGasTarget)
@@ -89,9 +90,20 @@ func CalcBaseFee(config *params.ChainConfig, parent *types.Header) *big.Int {
 		y := x.Div(x, parentGasTargetBig)
 		baseFeeDelta := x.Div(y, baseFeeChangeDenominator)
 
-		return math.BigMax(
+		baseFee := math.BigMax(
 			x.Sub(parent.BaseFee, baseFeeDelta),
 			common.Big0,
 		)
+
+		if config.IsLondon(parent.Number) {
+			return baseFee
+		}
+
+		// For Callisto EIP 1559
+		if params.CallistoInitialBaseFee > baseFee.Uint64() {
+			return new(big.Int).SetUint64(params.CallistoInitialBaseFee)
+		}
+
+		return baseFee
 	}
 }
