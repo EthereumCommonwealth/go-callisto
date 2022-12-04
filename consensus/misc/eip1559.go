@@ -100,8 +100,10 @@ func CalcBaseFee(config *params.ChainConfig, parent *types.Header) *big.Int {
 		}
 
 		// For Callisto EIP 1559
-		if params.CallistoInitialBaseFee > baseFee.Uint64() {
-			return new(big.Int).SetUint64(params.CallistoInitialBaseFee)
+		if config.IsEIP1559Callisto2(parent.Number) {
+			if params.CallistoInitialBaseFee > baseFee.Uint64() {
+				return new(big.Int).SetUint64(params.CallistoInitialBaseFee)
+			}
 		}
 
 		return baseFee

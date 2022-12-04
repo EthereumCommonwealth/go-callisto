@@ -99,26 +99,27 @@ var (
 
 	// CallistoChainTestnetConfig
 	CallistoChainTestnetConfig = &ChainConfig{
-		ChainID:              big.NewInt(20729),
-		HomesteadBlock:       big.NewInt(0),
-		DAOForkBlock:         nil,
-		DAOForkSupport:       false,
-		EIP150Block:          big.NewInt(0),
-		EIP150Hash:           common.HexToHash("0x82270b80fc90beb005505a9ef95039639968a0e81b2904ad30128c93d713d2c4"),
-		EIP155Block:          big.NewInt(10),
-		EIP158Block:          big.NewInt(10),
-		ByzantiumBlock:       big.NewInt(20),
-		CLOHF1Block:          big.NewInt(1000),
-		CLOMPBlock:           big.NewInt(1500),
-		CSV2Block:            big.NewInt(15000),
-		ConstantinopleBlock:  big.NewInt(2000),
-		PetersburgBlock:      big.NewInt(2000),
-		IstanbulBlock:        big.NewInt(3000),
-		MuirGlacierBlock:     big.NewInt(3650000),
-		BerlinBlock:          big.NewInt(3650100),
-		LondonBlock:          big.NewInt(3650200),
-		EIP1559CallistoBlock: big.NewInt(3770500),
-		Ethash:               new(EthashConfig),
+		ChainID:               big.NewInt(20729),
+		HomesteadBlock:        big.NewInt(0),
+		DAOForkBlock:          nil,
+		DAOForkSupport:        false,
+		EIP150Block:           big.NewInt(0),
+		EIP150Hash:            common.HexToHash("0x82270b80fc90beb005505a9ef95039639968a0e81b2904ad30128c93d713d2c4"),
+		EIP155Block:           big.NewInt(10),
+		EIP158Block:           big.NewInt(10),
+		ByzantiumBlock:        big.NewInt(20),
+		CLOHF1Block:           big.NewInt(1000),
+		CLOMPBlock:            big.NewInt(1500),
+		CSV2Block:             big.NewInt(15000),
+		ConstantinopleBlock:   big.NewInt(2000),
+		PetersburgBlock:       big.NewInt(2000),
+		IstanbulBlock:         big.NewInt(3000),
+		MuirGlacierBlock:      big.NewInt(3650000),
+		BerlinBlock:           big.NewInt(3650100),
+		LondonBlock:           big.NewInt(3650200),
+		EIP1559CallistoBlock:  big.NewInt(3770500),
+		EIP1559CallistoBlock2: big.NewInt(3811500),
+		Ethash:                new(EthashConfig),
 	}
 
 	// MainnetTrustedCheckpoint contains the light client trusted checkpoint for the main network.
@@ -303,16 +304,16 @@ var (
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
+	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}}
+	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}}
 
-	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
+	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
 )
 
 // TrustedCheckpoint represents a set of post-processed trie roots (CHT and
@@ -396,10 +397,11 @@ type ChainConfig struct {
 	// the network that triggers the consensus upgrade.
 	TerminalTotalDifficulty *big.Int `json:"terminalTotalDifficulty,omitempty"`
 
-	CLOHF1Block          *big.Int `json:"clohf1Block,omitempty"` // Callisto Hardfork 1 block
-	CLOMPBlock           *big.Int `json:"cloMPBlock,omitempty"`
-	CSV2Block            *big.Int `json:"csv2Block,omitempty"`
-	EIP1559CallistoBlock *big.Int `json:"eip1559Callisto,omitempty"`
+	CLOHF1Block           *big.Int `json:"clohf1Block,omitempty"` // Callisto Hardfork 1 block
+	CLOMPBlock            *big.Int `json:"cloMPBlock,omitempty"`
+	CSV2Block             *big.Int `json:"csv2Block,omitempty"`
+	EIP1559CallistoBlock  *big.Int `json:"eip1559Callisto,omitempty"`
+	EIP1559CallistoBlock2 *big.Int `json:"eip1559Callisto2,omitempty"`
 
 	// Various consensus engines
 	Ethash *EthashConfig `json:"ethash,omitempty"`
@@ -524,6 +526,11 @@ func (c *ChainConfig) IsLondon(num *big.Int) bool {
 
 func (c *ChainConfig) IsEIP1559Callisto(num *big.Int) bool {
 	return isForked(c.EIP1559CallistoBlock, num)
+}
+
+// TODO: Remove it after test in testnet
+func (c *ChainConfig) IsEIP1559Callisto2(num *big.Int) bool {
+	return isForked(c.EIP1559CallistoBlock2, num)
 }
 
 // IsArrowGlacier returns whether num is either equal to the Arrow Glacier (EIP-4345) fork block or greater.
