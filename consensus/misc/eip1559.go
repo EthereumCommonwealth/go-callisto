@@ -95,15 +95,15 @@ func CalcBaseFee(config *params.ChainConfig, parent *types.Header) *big.Int {
 			common.Big0,
 		)
 
-		if config.IsLondon(parent.Number) {
-			return baseFee
-		}
-
 		// For Callisto EIP 1559
 		if config.IsEIP1559Callisto2(parent.Number) {
 			if params.CallistoInitialBaseFee > baseFee.Uint64() {
 				return new(big.Int).SetUint64(params.CallistoInitialBaseFee)
 			}
+		}
+
+		if config.IsLondon(parent.Number) {
+			return baseFee
 		}
 
 		return baseFee
