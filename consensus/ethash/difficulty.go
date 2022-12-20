@@ -28,6 +28,8 @@ const (
 	// The decision boundary on the blocktime duration used to determine
 	// whether difficulty should go up or down.
 	frontierDurationLimit = 13
+	// callistoDurationLimit
+	callistoDurationLimit = 11
 	// minimumDifficulty The minimum that the difficulty may ever be.
 	minimumDifficulty = 131072
 	// expDiffPeriod is the exponential difficulty period
