@@ -58,6 +58,10 @@ func CalcBaseFee(config *params.ChainConfig, parent *types.Header) *big.Int {
 		return new(big.Int).SetUint64(params.InitialBaseFee)
 	}
 
+	if !config.IsEIP1559Callisto(parent.Number) && parent.Number.Cmp(big.NewInt(3768602)) == 1 {
+		return new(big.Int).SetUint64(params.CallistoInitialBaseFee)
+	}
+
 	var (
 		parentGasTarget          = parent.GasLimit / params.ElasticityMultiplier
 		parentGasTargetBig       = new(big.Int).SetUint64(parentGasTarget)
