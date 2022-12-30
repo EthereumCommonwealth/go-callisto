@@ -18,7 +18,6 @@ package misc
 
 import (
 	"fmt"
-	m "math"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -65,9 +64,9 @@ func CalcBaseFee(config *params.ChainConfig, parent *types.Header) *big.Int {
 		baseFeeChangeDenominator = new(big.Int).SetUint64(params.BaseFeeChangeDenominator)
 	)
 
-	if config.IsBaseFeeCallisto(parent.Number) {
-		parentGasTarget = uint64(m.Floor(float64(parent.GasLimit) / params.CallistoElasticityMultiplier))
-	}
+	//if config.IsBaseFeeCallisto(parent.Number) {
+	//	parentGasTarget = uint64(m.Floor(float64(parent.GasLimit) / params.CallistoElasticityMultiplier))
+	//}
 
 	// If the parent gasUsed is the same as the target, the baseFee remains unchanged.
 	if parent.GasUsed == parentGasTarget {
