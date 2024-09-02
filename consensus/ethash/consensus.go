@@ -689,7 +689,10 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 	blockReward := CLOMinerReward
 	treasuryReward := CLOTreasuryReward
 	stakeReward := CLOStakeReward
+	reserveReward := CLOReserveReward
 	stakeAddress := CLOStakeAddress
+	treasuryAddress := CLOTreasuryAddress
+	reserveAddress := CLOReserveAddress
 
 	if config.IsCLOHF1(header.Number) {
 		treasuryReward = CLOHF1TreasuryReward
@@ -713,6 +716,17 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 		treasuryReward = getCLOMonetaryPolicyTreasury(monetaryPolicyStep)
 		stakeReward = getCLOMonetaryPolicyStake(monetaryPolicyStep)
 	}
+	
+	if config.IsEridana(header.Number) {
+		blockReward = (state.GetState(DAOMPAddress, DAOMPMinerRewardKey)).Big()
+		treasuryReward = (state.GetState(DAOMPAddress, DAOMPTreasuryRewardKey)).Big()
+		stakeReward = (state.GetState(DAOMPAddress, DAOMPStakeRewardKey)).Big()
+		reserveReward = (state.GetState(DAOMPAddress, DAOMPReserveRewardKey)).Big()
+		treasuryAddress = common.BigToAddress((state.GetState(DAOMPAddress, DAOMPTreasuryAddressKey)).Big())
+		stakeAddress = common.BigToAddress((state.GetState(DAOMPAddress, DAOMPStakeAddressKey)).Big())
+		reserveAddress = common.BigToAddress((state.GetState(DAOMPAddress, DAOMPReserveAddressKey)).Big())
+		state.AddBalance(reserveAddress, reserveReward)
+	}
 
 	// Accumulate the rewards for the miner and any included uncles
 	reward := new(big.Int).Set(blockReward)
@@ -729,6 +743,6 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 	}
 
 	state.AddBalance(header.Coinbase, reward)
-	state.AddBalance(CLOTreasuryAddress, treasuryReward)
+	state.AddBalance(treasuryAddress, treasuryReward)
 	state.AddBalance(stakeAddress, stakeReward)
 }

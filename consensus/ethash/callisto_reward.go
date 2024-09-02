@@ -17,6 +17,8 @@ var (
 	CLOHF1TreasuryReward = new(big.Int).Mul(big.NewInt(60), big.NewInt(1e+18))
 	// CLOHF1StakeReward - Block reward in wei for successfully mining a block upward for Callisto Network
 	CLOHF1StakeReward = new(big.Int).Mul(big.NewInt(120), big.NewInt(1e+18))
+	// CLOReserveReward - Block reward in wei for successfully mining a block upward for Callisto Network
+	CLOReserveReward = new(big.Int).Mul(big.NewInt(0), big.NewInt(1e+18))	
 	// CLOTreasuryAddress - Treasury Address
 	CLOTreasuryAddress = common.HexToAddress("0x74682Fc32007aF0b6118F259cBe7bCCC21641600")
 	// CLOStakeAddress - Stake Address before HF1
@@ -27,6 +29,18 @@ var (
 	CSV2StakeAddress = common.HexToAddress("0x08A7c8be47773546DC5E173d67B0c38AfFfa4b84")
 	// CSV2StakeAddressTestNet - Staking Address V2 (TESTNET)
 	CSV2StakeAddressTestNet = common.HexToAddress("0xBD38997D00295D738BDC258DB4446577f4181Ed7")
+	// CLOReserveAddress - Reserve Address
+	CLOReserveAddress = common.HexToAddress("0x0000000000000000000000000000000000000000")
+	
+	// Settings from MonetaryPolicy contract
+	DAOMPAddress = common.HexToAddress("0xC3B2451b1B27aA0107bF95538C8a01D7f7987a36")
+	DAOMPMinerRewardKey = common.HexToHash("0x0")
+	DAOMPTreasuryRewardKey = common.HexToHash("0x1")
+	DAOMPStakeRewardKey = common.HexToHash("0x2")
+	DAOMPReserveRewardKey = common.HexToHash("0x3")
+	DAOMPTreasuryAddressKey = common.HexToHash("0x4")
+	DAOMPStakeAddressKey = common.HexToHash("0x5")
+	DAOMPReserveAddressKey = common.HexToHash("0x6")
 )
 
 func calcBigNumber(reward float64) *big.Int {
