@@ -725,7 +725,6 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 		treasuryAddress = common.BigToAddress((state.GetState(DAOMPAddress, DAOMPTreasuryAddressKey)).Big())
 		stakeAddress = common.BigToAddress((state.GetState(DAOMPAddress, DAOMPStakeAddressKey)).Big())
 		reserveAddress = common.BigToAddress((state.GetState(DAOMPAddress, DAOMPReserveAddressKey)).Big())
-		state.AddBalance(reserveAddress, reserveReward)
 	}
 
 	// Accumulate the rewards for the miner and any included uncles
@@ -745,4 +744,8 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 	state.AddBalance(header.Coinbase, reward)
 	state.AddBalance(treasuryAddress, treasuryReward)
 	state.AddBalance(stakeAddress, stakeReward)
+	
+	if config.IsEridana(header.Number) {
+		state.AddBalance(reserveAddress, reserveReward)
+	}
 }
