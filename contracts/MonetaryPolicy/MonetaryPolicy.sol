@@ -15,7 +15,7 @@ contract MonetaryPolicy {
     address public ReserveAddress = 0x0000000000000000000000000000000000000000; // Reserved address
 
     address public GovernanceDAO = 0x810059e1406dEDAFd1BdCa4E0137CbA306c0Ce36; // DAO vote address
-    address public CallistoNetwork = 0xA9389DB4610175CaC4Fad32670A5189A89f874B5; // Dexaran vote address
+    address public CallistoNetwork = 0xA9389DB4610175CaC4Fad32670A5189A89f874B5; // Second party(Dexaran)  vote address
 
     uint256 public TimeVoice = 45 days; // time to wait for the second voter. After this period proposal will be accepted/declined based on the decision of the first voter.
     uint256 public TimeEnd = 60 days; // how long each proposal will be active
@@ -24,7 +24,7 @@ contract MonetaryPolicy {
         uint256 timeVoice; // deadline for the second voter. After this period vote will be accepted/declined based on the decision of the first voter.
         uint256 timeEnd; // deadline for this propocal 
         bool governanceDAO; // DAO vote 
-        bool callistoNetwork; // Dexaran vote
+        bool callistoNetwork; // Second party(Dexaran) vote
     }
 
     mapping(bytes32 => Data) public proposals; // temporary storage for active proposals indexed by hashes
@@ -46,7 +46,7 @@ contract MonetaryPolicy {
     function setRewards(uint256 _minerReward, uint256 _treasuryReward, uint256 _stakeReward, uint256 _reserveReward, bool _voice) external onlyTreasuryRecipients {
         bytes4 _selector = this.setRewards.selector;
         bytes32 _hash = keccak256(abi.encodePacked(_selector, _minerReward, _treasuryReward, _stakeReward, _reserveReward)); // proposal hash
-        if(_consensus(_hash, _voice)){ // если консенсус достигнут
+        if(_consensus(_hash, _voice)){ // proposal accepted
             MinerReward = _minerReward;
             TreasuryReward = _treasuryReward;
             StakeReward = _stakeReward;
@@ -59,7 +59,7 @@ contract MonetaryPolicy {
     function setTreasuryAddress(address _treasuryAddress, bool _voice) external onlyTreasuryRecipients {
         bytes4 _selector = this.setTreasuryAddress.selector;
         bytes32 _hash = keccak256(abi.encodePacked(_selector, _treasuryAddress)); // proposal hash
-        if(_consensus(_hash, _voice)){ // если консенсус достигнут
+        if(_consensus(_hash, _voice)){ // proposal accepted
             TreasuryAddress = _treasuryAddress;
         }
         emit Proposal(msg.sender, _hash, _voice); // proposal event for logging
@@ -87,20 +87,20 @@ contract MonetaryPolicy {
         emit Proposal(msg.sender, _hash, _voice); // proposal event for logging
     }
 
-    // Updates GovernanceDAO or Dexaran owner address. Sender must be current owner and can change only it's own address
+    // Updates GovernanceDAO or Second party(Dexaran)  owner address. Sender must be current owner and can change only it's own address
     function setNewOwners(address _newOwner) external onlyTreasuryRecipients {
         require((_newOwner != GovernanceDAO) && (_newOwner != CallistoNetwork));
         (GovernanceDAO, CallistoNetwork) = msg.sender == GovernanceDAO ? (_newOwner, CallistoNetwork) : (GovernanceDAO, _newOwner);
     }
 
-    // Updates GovernanceDAO or Dexaran owner address. Owners can update address of each other if other party did not decline such proposal
+    // Updates GovernanceDAO or Second party(Dexaran)  owner address. Owners can update address of each other if other party did not decline such proposal
     function resetOwner(address _owner, address _newOwner, bool _voice) external onlyTreasuryRecipients {
         require((_owner == GovernanceDAO) || (_owner == CallistoNetwork));
         require((_newOwner != GovernanceDAO) && (_newOwner != CallistoNetwork));
 
         bytes4 _selector = this.resetOwner.selector;
         bytes32 _hash = keccak256(abi.encodePacked(_selector, _owner, _newOwner)); // proposal hash
-        if(_consensus(_hash, _voice)){ // если консенсус достигнут
+        if(_consensus(_hash, _voice)){ // proposal accepted
             (GovernanceDAO, CallistoNetwork) = _owner == GovernanceDAO ? (_newOwner, CallistoNetwork) : (GovernanceDAO, _newOwner);
         }
         emit Proposal(msg.sender, _hash, _voice); // proposal event for logging
