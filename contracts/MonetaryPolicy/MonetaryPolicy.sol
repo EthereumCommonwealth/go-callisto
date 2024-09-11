@@ -22,7 +22,7 @@ contract MonetaryPolicy {
 
     struct Data {
         uint256 timeVoice; // deadline for the second voter. After this period vote will be accepted/declined based on the decision of the first voter.
-        uint256 timeEnd; // deadline for this propocal 
+        uint256 timeEnd; // deadline for this proposal 
         bool governanceDAO; // DAO vote 
         bool callistoNetwork; // Second party(Dexaran) vote
     }
