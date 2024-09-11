@@ -29,7 +29,7 @@ contract MonetaryPolicy {
 
     mapping(bytes32 => Data) public proposals; // temporary storage for active proposals indexed by hashes
 
-    event Proposal(address indexed owner, bytes32 indexed hash, bool indexed voce); // new proposal event
+    event Proposal(address indexed owner, bytes32 indexed hash, bool indexed voice); // new proposal event
 
     modifier onlyGovernanceDAO() {
         require(msg.sender == GovernanceDAO, "Only GovernanceDAO");
