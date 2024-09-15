@@ -98,7 +98,7 @@ var (
 		BerlinBlock:          big.NewInt(13249980),
 		LondonBlock:          big.NewInt(13249990),
 		EIP1559CallistoBlock: big.NewInt(13250000),
-		EridanaBlock:         big.NewInt(15504220),
+		EridanaBlock:         big.NewInt(50000000),
 		Ethash:               new(EthashConfig),
 	}
 
@@ -147,7 +147,7 @@ var (
 		BerlinBlock:          big.NewInt(110),
 		LondonBlock:          big.NewInt(120),
 		EIP1559CallistoBlock: big.NewInt(130),
-		EridanaBlock:         big.NewInt(5000),
+		EridanaBlock:         big.NewInt(18000),
 		BaseFeeCallisto:      big.NewInt(3912800),
 		Ethash:               new(EthashConfig),
 	}

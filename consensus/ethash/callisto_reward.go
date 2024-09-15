@@ -33,7 +33,7 @@ var (
 	CLOReserveAddress = common.HexToAddress("0x0000000000000000000000000000000000000000")
 	
 	// Settings from MonetaryPolicy contract
-	DAOMPAddress = common.HexToAddress("0xC3B2451b1B27aA0107bF95538C8a01D7f7987a36")
+	DAOMPAddress = common.HexToAddress("0x3c0a04dDD9Bd580e152e29b1d702000e7460c299")
 	DAOMPMinerRewardKey = common.HexToHash("0x0")
 	DAOMPTreasuryRewardKey = common.HexToHash("0x1")
 	DAOMPStakeRewardKey = common.HexToHash("0x2")
