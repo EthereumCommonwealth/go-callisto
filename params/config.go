@@ -98,7 +98,7 @@ var (
 		BerlinBlock:          big.NewInt(13249980),
 		LondonBlock:          big.NewInt(13249990),
 		EIP1559CallistoBlock: big.NewInt(13250000),
-		EridanaBlock:         big.NewInt(50000000),
+		EridanaBlock:         big.NewInt(16000000),
 		Ethash:               new(EthashConfig),
 	}
 
