@@ -98,6 +98,7 @@ var (
 		BerlinBlock:          big.NewInt(13249980),
 		LondonBlock:          big.NewInt(13249990),
 		EIP1559CallistoBlock: big.NewInt(13250000),
+		EridanaBlock:         big.NewInt(16000000),
 		Ethash:               new(EthashConfig),
 	}
 
@@ -146,6 +147,7 @@ var (
 		BerlinBlock:          big.NewInt(110),
 		LondonBlock:          big.NewInt(120),
 		EIP1559CallistoBlock: big.NewInt(130),
+		EridanaBlock:         big.NewInt(18000),
 		BaseFeeCallisto:      big.NewInt(3912800),
 		Ethash:               new(EthashConfig),
 	}
@@ -332,16 +334,16 @@ var (
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
+	AllEthashProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	//
 	// This configuration is intentionally not using keyed fields to force anyone
 	// adding flags to the config to also have to set these fields.
-	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}}
+	AllCliqueProtocolChanges = &ChainConfig{big.NewInt(1337), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, &CliqueConfig{Period: 0, Epoch: 30000}}
 
-	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
+	TestChainConfig = &ChainConfig{big.NewInt(1), big.NewInt(0), nil, false, big.NewInt(0), common.Hash{}, big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), big.NewInt(0), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, new(EthashConfig), nil}
 )
 
 // TrustedCheckpoint represents a set of post-processed trie roots (CHT and
@@ -429,6 +431,7 @@ type ChainConfig struct {
 	CLOMPBlock           *big.Int `json:"cloMPBlock,omitempty"`
 	CSV2Block            *big.Int `json:"csv2Block,omitempty"`
 	EIP1559CallistoBlock *big.Int `json:"eip1559Callisto,omitempty"`
+	EridanaBlock         *big.Int `json:"eridanaBlock,omitempty"`
 	BaseFeeCallisto      *big.Int `json:"baseFeeCallisto,omitempty"`
 
 	// Various consensus engines
@@ -466,7 +469,7 @@ func (c *ChainConfig) String() string {
 	default:
 		engine = "unknown"
 	}
-	return fmt.Sprintf("{ChainID: %v Homestead: %v DAO: %v DAOSupport: %v EIP150: %v EIP155: %v EIP158: %v Byzantium: %v Constantinople: %v Petersburg: %v Istanbul: %v Muir Glacier: %v Berlin: %v London: %v Arrow Glacier: %v CLOHF1: %v CLOMP: %v CSv2: %v EIP-1559 CLO: %v Engine: %v}",
+	return fmt.Sprintf("{ChainID: %v Homestead: %v DAO: %v DAOSupport: %v EIP150: %v EIP155: %v EIP158: %v Byzantium: %v Constantinople: %v Petersburg: %v Istanbul: %v Muir Glacier: %v Berlin: %v London: %v Arrow Glacier: %v CLOHF1: %v CLOMP: %v CSv2: %v EIP-1559 CLO: %v Eridana: %v Engine: %v}",
 		c.ChainID,
 		c.HomesteadBlock,
 		c.DAOForkBlock,
@@ -486,6 +489,7 @@ func (c *ChainConfig) String() string {
 		c.CLOMPBlock,
 		c.CSV2Block,
 		c.EIP1559CallistoBlock,
+		c.EridanaBlock,
 		engine,
 	)
 }
@@ -586,6 +590,11 @@ func (c *ChainConfig) IsCLOMP(num *big.Int) bool {
 // IsCSV2 returns whether num represents a block number after the Callisto hard fork changing CS address to v2
 func (c *ChainConfig) IsCSV2(num *big.Int) bool {
 	return isForked(c.CSV2Block, num)
+}
+
+// IsEridana returns whether num represents a block number after the Eridana hard fork changing monetary policy
+func (c *ChainConfig) IsEridana(num *big.Int) bool {
+	return isForked(c.EridanaBlock, num)
 }
 
 // CheckCompatible checks whether scheduled fork transitions have been imported
