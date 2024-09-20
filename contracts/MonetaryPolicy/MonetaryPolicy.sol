@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// author: Upaut (CallistoDAO)
+// Author: Upaut (CallistoDAO)
+// Contract address on Callisto Mainnet: 0x3c0a04dDD9Bd580e152e29b1d702000e7460c299
 
 pragma solidity ^0.8.16;
 
 contract MonetaryPolicy {
 
-    uint256 public MinerReward; // Miner reward per block
-    uint256 public TreasuryReward; // Treasury reward per block  
-    uint256 public StakeReward; // ColdStacking contract reward per block
-    uint256 public ReserveReward; // Reserved, in case we need some additional reward type per block
+    uint256 public MinerReward;    // Miner reward per block.
+    uint256 public TreasuryReward; // Treasury reward per block.
+    uint256 public StakeReward;    // ColdStacking contract reward per block.
+    uint256 public ReserveReward;  // Reserved, in case we need some additional reward type per block.
 
     address public TreasuryAddress = 0x74682Fc32007aF0b6118F259cBe7bCCC21641600; // Treasury contract address.
     address public StakeAddress = 0x08A7c8be47773546DC5E173d67B0c38AfFfa4b84;    // ColdStaking contract address.
